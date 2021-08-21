@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  {% block title %}
+    <title>Генеалогическое древо</title>
+  {% endblock %}
+
+  {% include 'styles.html' %}
+
+  {% block css %}
+  {% endblock %}
+</head>
+<body>
+{% url 'members:list' as members_list %}
+<nav class="navbar sticky-top navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a href="{% url 'home' %}" class="navbar-brand">Древо</a>
+    {% if request.path == members_list %}
+      <form class="d-flex" action="{% url 'members:list' %}">
+        <input
+            name="q"
+            value="{{ request.GET.q }}"
+            class="form-control me-2"
+            type="text"
+            placeholder="Поиски по имени..."
+            aria-label="Поиск"
+        >
+        <button class="btn btn-outline-light" type="submit">Поиск</button>
+      </form>
+    {% endif %}
+  </div>
+</nav>
+<section class="container mt-2">
+  {% block body %}
+  {% endblock %}
+</section>
+
+{% include 'scripts.html' %}
+</body>
+</html>

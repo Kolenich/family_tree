@@ -1,0 +1,12 @@
+{% if queryset %}
+  <div class="card-text">
+    <b>{{ title }}:</b>
+    <ul>
+      {% for unit in queryset %}
+        <li>
+          <a class="link-info" href="{% url 'members:detail' unit.pk %}">{{ unit.full_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

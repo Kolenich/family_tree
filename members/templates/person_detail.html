@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/person_detail.css' %}">
+{% endblock %}
+
+{% block body %}
+  {% static 'img/default-user_1.png' as default_avatar %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <img
+          src="{% firstof person.avatar_url default_avatar %}"
+          class="img-fluid img-thumbnail detail-img"
+          alt=""
+      >
+      <h5 class="card-title">{{ person.full_name }}</h5>
+      <p class="card-text">
+        <b>Пол:</b> {{ person.get_sex_display|lower }}
+        <br/>
+        <b>Возраст:</b> {{ person.age }}
+      </p>
+      <p class="card-text">
+        {% if person.mother %}
+          <b>Мать:</b>
+          <a class="link-info" href="{% url 'members:detail' person.mother.pk %}">
+            {{ person.mother.full_name }}
+          </a>
+        {% else %}
+          <b>Мать:</b> неизвестна
+        {% endif %}
+        <br/>
+        {% if person.father %}
+          <b>Отец:</b>
+          <a class="link-info" href="{% url 'members:detail' person.father.pk %}">
+            {{ person.father.full_name }}
+          </a>
+        {% else %}
+          <b>Отец:</b> неизвестен
+        {% endif %}
+      </p>
+      {% if person.spouse %}
+        <p class="card-text">
+          <b>Супруг/Супруга:</b>
+          <a class="link-info" href="{% url 'members:detail' person.spouse.pk %}">
+            {{ person.spouse.full_name }}
+          </a>
+        </p>
+      {% endif %}
+      {% include 'generic/related_list.html' with title='Дети' queryset=person.children %}
+      {% include 'generic/related_list.html' with title='Внуки/Внучки' queryset=person.grandchildren %}
+      {% include 'generic/related_list.html' with title='Правнуки/Правнучки' queryset=person.great_grandchildren %}
+      {% include 'generic/related_list.html' with title='Братья/Сёстры' queryset=person.siblings %}
+      {% include 'generic/related_list.html' with title='Дяди/Тёти' queryset=person.uncles_and_aunties %}
+      {% include 'generic/related_list.html' with title='Двоюродные братья/сёстры' queryset=person.cousins %}
+      {% include 'generic/related_list.html' with title='Племянники/племянницы' queryset=person.nephews_and_nieces %}
+      <p class="card-text">
+        <small class="text-muted">
+          {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}
+        </small>
+      </p>
+    </div>
+    <a role="button" class="btn btn-primary m-2 float-end" href="{% url 'members:list' %}">Назад</a>
+  </div>
+{% endblock %}
