@@ -39,24 +39,17 @@
           <b>Отец:</b> неизвестен
         {% endif %}
       </p>
-      {% if person.spouse %}
-        <p class="card-text">
-          <b>Супруг/Супруга:</b>
-          <a class="link-info" href="{% url 'members:detail' person.spouse.pk %}">
-            {{ person.spouse.full_name }}
-          </a>
-        </p>
-      {% endif %}
-      {% include 'generic/related_list.html' with title='Дети' queryset=person.children %}
-      {% include 'generic/related_list.html' with title='Внуки/Внучки' queryset=person.grandchildren %}
-      {% include 'generic/related_list.html' with title='Правнуки/Правнучки' queryset=person.great_grandchildren %}
-      {% include 'generic/related_list.html' with title='Бабушки/Дедушки' queryset=person.grandparents %}
-      {% include 'generic/related_list.html' with title='Прабабушки/Прадедушки' queryset=person.great_grandparents %}
-      {% include 'generic/related_list.html' with title='Родные братья/сёстры' queryset=person.siblings %}
-      {% include 'generic/related_list.html' with title='Сводные братья/сёстры' queryset=person.step_siblings %}
-      {% include 'generic/related_list.html' with title='Дяди/Тёти' queryset=person.uncles_and_aunties %}
-      {% include 'generic/related_list.html' with title='Двоюродные братья/сёстры' queryset=person.cousins %}
-      {% include 'generic/related_list.html' with title='Племянники/племянницы' queryset=person.nephews_and_nieces %}
+      {% include 'generic/related_kin.html' with title='Супруг/Супруга' object=person.spouse %}
+      {% include 'generic/related_kin_list.html' with title='Дети' queryset=person.children %}
+      {% include 'generic/related_kin_list.html' with title='Внуки/Внучки' queryset=person.grandchildren %}
+      {% include 'generic/related_kin_list.html' with title='Правнуки/Правнучки' queryset=person.great_grandchildren %}
+      {% include 'generic/related_kin_list.html' with title='Бабушки/Дедушки' queryset=person.grandparents %}
+      {% include 'generic/related_kin_list.html' with title='Прабабушки/Прадедушки' queryset=person.great_grandparents %}
+      {% include 'generic/related_kin_list.html' with title='Родные братья/сёстры' queryset=person.siblings %}
+      {% include 'generic/related_kin_list.html' with title='Сводные братья/сёстры' queryset=person.step_siblings %}
+      {% include 'generic/related_kin_list.html' with title='Дяди/Тёти' queryset=person.uncles_and_aunties %}
+      {% include 'generic/related_kin_list.html' with title='Двоюродные братья/сёстры' queryset=person.cousins %}
+      {% include 'generic/related_kin_list.html' with title='Племянники/племянницы' queryset=person.nephews_and_nieces %}
       <p class="card-text">
         <small class="text-muted">
           {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}

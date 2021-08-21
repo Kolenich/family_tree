@@ -1,0 +1,8 @@
+{% if object %}
+  <p class="card-text">
+    <b>{{ title }}:</b>
+    <a class="link-info" href="{% url 'members:detail' object.pk %}">
+      {{ object.full_name }}
+    </a>
+  </p>
+{% endif %}
