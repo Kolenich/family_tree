@@ -74,21 +74,39 @@ class Person(models.Model):
         return Person.objects.none().union(*[grandchild.children for grandchild in self.grandchildren])
 
     @property
+    def parents(self):
+        return Person.objects.filter(Q(pk=self.mother_id) | Q(pk=self.father_id))
+
+    @property
+    def grandparents(self):
+        return Person.objects.none().union(*[parent.parents for parent in self.parents])
+
+    @property
+    def great_grandparents(self):
+        return Person.objects.none().union(*[parent.parents for parent in self.grandparents])
+
+    @property
     def siblings(self):
+        return Person.objects \
+            .filter(mother=self.mother, mother__isnull=False, father=self.father, father__isnull=False) \
+            .exclude(pk=self.pk)
+
+    @property
+    def step_siblings(self):
         queryset = Person.objects.none()
         if self.father:
             queryset = queryset | self.father.children
         if self.mother:
             queryset = queryset | self.mother.children
-        return queryset.exclude(pk=self.pk)
+        return queryset.exclude(pk__in=[*self.siblings.values_list('pk', flat=True), self.pk])
 
     @property
     def uncles_and_aunties(self):
         queryset = Person.objects.none()
         if self.father:
-            queryset = queryset | self.father.siblings
+            queryset = queryset | self.father.siblings | self.father.step_siblings
         if self.mother:
-            queryset = queryset | self.mother.siblings
+            queryset = queryset | self.mother.siblings | self.mother.step_siblings
         return queryset
 
     @property
@@ -96,8 +114,12 @@ class Person(models.Model):
         return Person.objects.none().union(*[person.children for person in self.uncles_and_aunties])
 
     @property
+    def second_cousins(self):
+        return Person.objects.none().union(*[person.grandchildren for person in self.uncles_and_aunties])
+
+    @property
     def nephews_and_nieces(self):
-        return Person.objects.none().union(*[person.children for person in self.siblings])
+        return Person.objects.none().union(*[person.children for person in [*self.siblings, *self.step_siblings]])
 
     @transaction.atomic
     def mary(self, person):
