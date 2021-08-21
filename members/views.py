@@ -6,12 +6,11 @@ from .models import Person
 
 # Create your views here.
 class PersonListView(ListView):
-    model = Person
     context_object_name = 'persons'
     template_name = 'person_list.html'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Person.objects.order_by('date_of_birth')
 
         if self.request.GET.get('q'):
             q = self.request.GET.get('q')
