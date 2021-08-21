@@ -63,15 +63,21 @@ class Person(models.Model):
 
     @property
     def children(self):
-        return Person.objects.filter(Q(mother=self.pk) | Q(father=self.pk))
+        return Person.objects.none() | self.father_of.all() | self.mother_of.all()
 
     @property
     def grandchildren(self):
-        return Person.objects.none().union(*[child.children for child in self.children])
+        queryset = Person.objects.none()
+        for child in self.children:
+            queryset |= child.children
+        return queryset
 
     @property
     def great_grandchildren(self):
-        return Person.objects.none().union(*[grandchild.children for grandchild in self.grandchildren])
+        queryset = Person.objects.none()
+        for grandchild in self.grandchildren:
+            queryset |= grandchild.children
+        return queryset
 
     @property
     def parents(self):
@@ -79,11 +85,17 @@ class Person(models.Model):
 
     @property
     def grandparents(self):
-        return Person.objects.none().union(*[parent.parents for parent in self.parents])
+        queryset = Person.objects.none()
+        for parent in self.parents:
+            queryset |= parent.parents
+        return queryset
 
     @property
     def great_grandparents(self):
-        return Person.objects.none().union(*[parent.parents for parent in self.grandparents])
+        queryset = Person.objects.none()
+        for grandparent in self.grandparents:
+            queryset |= grandparent.parents
+        return queryset
 
     @property
     def siblings(self):
@@ -111,15 +123,24 @@ class Person(models.Model):
 
     @property
     def cousins(self):
-        return Person.objects.none().union(*[person.children for person in self.uncles_and_aunties])
+        queryset = Person.objects.none()
+        for person in self.uncles_and_aunties:
+            queryset |= person.children
+        return queryset
 
     @property
     def second_cousins(self):
-        return Person.objects.none().union(*[person.grandchildren for person in self.uncles_and_aunties])
+        queryset = Person.objects.none()
+        for cousin in self.cousins:
+            queryset |= cousin.children
+        return queryset
 
     @property
     def nephews_and_nieces(self):
-        return Person.objects.none().union(*[person.children for person in [*self.siblings, *self.step_siblings]])
+        queryset = Person.objects.none()
+        for person in [*self.siblings, *self.step_siblings]:
+            queryset |= person.children
+        return queryset
 
     @transaction.atomic
     def mary(self, person):
