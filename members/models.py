@@ -29,9 +29,7 @@ class Person(models.Model):
                                   blank=True)
 
     def __str__(self):
-        if self.middle_name:
-            return f'{self.last_name} {self.first_name} {self.middle_name}'
-        return f'{self.last_name} {self.first_name}'
+        return self.full_name
 
     class Meta:
         verbose_name = 'Член дерева'
@@ -46,13 +44,16 @@ class Person(models.Model):
 
     @property
     def age(self):
+        delta = timezone.now().date() - self.date_of_birth
         if self.date_of_death:
-            return ((self.date_of_death - self.date_of_birth) / 365.25).days
-        return ((timezone.now().date() - self.date_of_birth) / 365.25).days
+            delta = self.date_of_death - self.date_of_birth
+        return (delta / 365.25).days
 
     @property
     def full_name(self):
-        return self.__str__()
+        if self.middle_name:
+            return f'{self.last_name} {self.first_name} {self.middle_name}'
+        return f'{self.last_name} {self.first_name}'
 
     @property
     def short_name(self):
@@ -106,11 +107,18 @@ class Person(models.Model):
         :param person: добавляемый человек
         :return:
         """
+        assert self.sex != person.sex, 'No single sex marriage allowed'
         assert self.spouse is None, f'You must first divorce with {self.spouse}'
         assert self.spouse != person, f'{self} and {person} already married'
         assert person.spouse is None, f'{person} already married on {person.spouse}'
         assert person not in [self.mother, self.father], 'Cannot mary your parent'
+        assert person not in self.children, 'Cannot mary your child'
+        assert person not in self.grandchildren, 'Cannot mary your grandchild'
+        assert person not in self.great_grandchildren, 'Cannot mary your great-grandchild'
         assert person not in self.siblings, 'Cannot mary your sibling'
+        assert person not in self.cousins, 'Cannot mary your cousin'
+        assert person not in self.uncles_and_aunties, 'Cannot mary your uncle/auntie'
+        assert person not in self.nephews_and_nieces, 'Cannot mary your nephew/niece'
 
         self.spouse = person
         person.spouse = self
