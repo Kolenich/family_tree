@@ -55,7 +55,7 @@
           {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}
         </small>
       </p>
+      <a role="button" class="btn btn-primary m-2 float-end" href="{% url 'members:list' %}">Назад</a>
     </div>
-    <a role="button" class="btn btn-primary m-2 float-end" href="{% url 'members:list' %}">Назад</a>
   </div>
 {% endblock %}
