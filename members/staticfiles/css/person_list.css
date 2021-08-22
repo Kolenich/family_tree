@@ -3,15 +3,3 @@
   height: 300px;
   object-fit: contain;
 }
-
-/* BG color for those non-fitting images */
-.card-image-bg {
-  background-color: gray;
-}
-
-/* Card image centering */
-.card-image-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-}
