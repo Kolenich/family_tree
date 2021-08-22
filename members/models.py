@@ -37,12 +37,6 @@ class Person(models.Model):
         db_table = 'persons'
 
     @property
-    def avatar_url(self):
-        if self.avatar:
-            return self.avatar.url
-        return None
-
-    @property
     def age(self):
         delta = timezone.now().date() - self.date_of_birth
         if self.date_of_death:

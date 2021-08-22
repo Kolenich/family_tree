@@ -10,7 +10,7 @@
   <div class="card mb-3">
     <div class="card-body">
       <img
-          src="{% firstof person.avatar_url default_avatar %}"
+          src="{% firstof person.avatar.url default_avatar %}"
           class="img-fluid img-thumbnail detail-img"
           alt=""
       >
