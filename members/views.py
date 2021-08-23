@@ -22,5 +22,4 @@ class PersonListView(ListView):
 
 class PersonDetailView(DetailView):
     model = Person
-    context_object_name = 'person'
     template_name = 'person_detail.html'
