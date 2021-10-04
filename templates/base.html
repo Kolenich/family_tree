@@ -17,7 +17,7 @@
   <div class="container-fluid">
     <a href="{% url 'home' %}" class="navbar-brand">Древо</a>
     {% if request.path == members_list %}
-      <form class="d-flex" action="{% url 'members:list' %}">
+      <form class="d-flex" action="{{ members_list }}">
         <input
             name="q"
             value="{{ request.GET.q }}"
