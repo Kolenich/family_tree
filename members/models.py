@@ -58,14 +58,14 @@ class Person(models.Model):
 
     @property
     def kin(self):
-        result = Person.objects.none()
+        queryset = Person.objects.none()
 
         for prop in filter(lambda x: not x.startswith('_') and x not in ('kin', 'objects'), dir(self)):
             instance = getattr(self, prop)
             if isinstance(instance, QuerySet):
-                result |= instance
+                queryset |= instance
 
-        return result
+        return queryset
 
     @property
     def children(self):
