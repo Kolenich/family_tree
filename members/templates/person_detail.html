@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load sex_filters %}
 
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/person_detail.css' %}">
@@ -17,7 +18,7 @@
       <h5 class="card-title">{{ person.full_name }}</h5>
       <p class="card-text">
         <b>Пол:</b> {{ person.get_sex_display|lower }}
-        <br/>
+        <br />
         <b>Возраст:</b> {{ person.age }}
       </p>
       <p class="card-text">
@@ -29,7 +30,7 @@
         {% else %}
           <b>Мать:</b> неизвестна
         {% endif %}
-        <br/>
+        <br />
         {% if person.father %}
           <b>Отец:</b>
           <a class="link-info" href="{% url 'members:detail' person.father.pk %}">
@@ -39,17 +40,26 @@
           <b>Отец:</b> неизвестен
         {% endif %}
       </p>
-      {% include 'generic/related_kin.html' with title='Супруг/Супруга' object=person.spouse %}
-      {% include 'generic/related_kin_list.html' with title='Дети' queryset=person.children %}
-      {% include 'generic/related_kin_list.html' with title='Внуки/Внучки' queryset=person.grandchildren %}
-      {% include 'generic/related_kin_list.html' with title='Правнуки/Правнучки' queryset=person.great_grandchildren %}
-      {% include 'generic/related_kin_list.html' with title='Бабушки/Дедушки' queryset=person.grandparents %}
-      {% include 'generic/related_kin_list.html' with title='Прабабушки/Прадедушки' queryset=person.great_grandparents %}
-      {% include 'generic/related_kin_list.html' with title='Родные братья/сёстры' queryset=person.siblings %}
-      {% include 'generic/related_kin_list.html' with title='Сводные братья/сёстры' queryset=person.step_siblings %}
-      {% include 'generic/related_kin_list.html' with title='Дяди/Тёти' queryset=person.uncles_and_aunties %}
-      {% include 'generic/related_kin_list.html' with title='Двоюродные братья/сёстры' queryset=person.cousins %}
-      {% include 'generic/related_kin_list.html' with title='Племянники/племянницы' queryset=person.nephews_and_nieces %}
+      {% include 'generic/spouse.html' with spouse=person.spouse %}
+      {% include 'generic/related_kin_list.html' with title='Дети' queryset=person.kin_children %}
+      {% include 'generic/related_kin_list.html' with title='Внуки' queryset=person.kin_grandchildren|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Внучки' queryset=person.kin_grandchildren|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Правнуки' queryset=person.kin_great_grandchildren|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Правнучки' queryset=person.kin_great_grandchildren|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Дедушки' queryset=person.kin_grandparents|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Бабушки' queryset=person.kin_grandparents|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Прадедушки' queryset=person.kin_great_grandparents|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Прабабушки' queryset=person.kin_great_grandparents|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Родные братья' queryset=person.kin_siblings|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Родные сёстры' queryset=person.kin_siblings|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Сводные братья' queryset=person.kin_step_siblings|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Сводные сёстры' queryset=person.kin_step_siblings|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Дяди' queryset=person.kin_uncles_and_aunties|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Тёти' queryset=person.kin_uncles_and_aunties|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Двоюродные братья' queryset=person.kin_cousins|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Двоюродные сёстры' queryset=person.kin_cousins|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Племянники' queryset=person.kin_nephews_and_nieces|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Племянницы' queryset=person.kin_nephews_and_nieces|is_female %}
       <p class="card-text">
         <small class="text-muted">
           {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}

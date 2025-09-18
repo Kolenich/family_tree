@@ -27,7 +27,7 @@ class Person(models.Model):
     father = models.ForeignKey('self', verbose_name='Отец', on_delete=models.SET_NULL, blank=True, null=True,
                                related_name='father_of')
     spouse = models.OneToOneField('self', verbose_name='Супруг/супруга', on_delete=models.SET_NULL, null=True,
-                                  blank=True)
+                                  blank=True, related_name='spouse_of')
 
     def __str__(self):
         return self.full_name
@@ -60,7 +60,7 @@ class Person(models.Model):
     def kin(self):
         queryset = Person.objects.none()
 
-        for prop in filter(lambda x: not x.startswith('_') and x not in ('kin', 'objects'), dir(self)):
+        for prop in filter(lambda x: x.startswith('kin_'), dir(self)):
             instance = getattr(self, prop)
             if isinstance(instance, QuerySet):
                 queryset |= instance
@@ -68,84 +68,84 @@ class Person(models.Model):
         return queryset
 
     @property
-    def children(self):
+    def kin_children(self):
         return Person.objects.none() | self.father_of.all() | self.mother_of.all()
 
     @property
-    def grandchildren(self):
+    def kin_grandchildren(self):
         queryset = Person.objects.none()
-        for child in self.children:
-            queryset |= child.children
+        for child in self.kin_children:
+            queryset |= child.kin_children
         return queryset
 
     @property
-    def great_grandchildren(self):
+    def kin_great_grandchildren(self):
         queryset = Person.objects.none()
-        for grandchild in self.grandchildren:
-            queryset |= grandchild.children
+        for grandchild in self.kin_grandchildren:
+            queryset |= grandchild.kin_children
         return queryset
 
     @property
-    def parents(self):
+    def kin_parents(self):
         return Person.objects.filter(Q(pk=self.mother_id) | Q(pk=self.father_id))
 
     @property
-    def grandparents(self):
+    def kin_grandparents(self):
         queryset = Person.objects.none()
-        for parent in self.parents:
-            queryset |= parent.parents
+        for parent in self.kin_parents:
+            queryset |= parent.kin_parents
         return queryset
 
     @property
-    def great_grandparents(self):
+    def kin_great_grandparents(self):
         queryset = Person.objects.none()
-        for grandparent in self.grandparents:
-            queryset |= grandparent.parents
+        for grandparent in self.kin_grandparents:
+            queryset |= grandparent.kin_parents
         return queryset
 
     @property
-    def siblings(self):
+    def kin_siblings(self):
         return Person.objects \
             .filter(mother=self.mother, mother__isnull=False, father=self.father, father__isnull=False) \
             .exclude(pk=self.pk)
 
     @property
-    def step_siblings(self):
+    def kin_step_siblings(self):
         queryset = Person.objects.none()
         if self.father:
-            queryset = queryset | self.father.children
+            queryset = queryset | self.father.kin_children
         if self.mother:
-            queryset = queryset | self.mother.children
-        return queryset.exclude(pk__in=[*self.siblings.values_list('pk', flat=True), self.pk])
+            queryset = queryset | self.mother.kin_children
+        return queryset.exclude(pk__in=[*self.kin_siblings.values_list('pk', flat=True), self.pk])
 
     @property
-    def uncles_and_aunties(self):
+    def kin_uncles_and_aunties(self):
         queryset = Person.objects.none()
         if self.father:
-            queryset = queryset | self.father.siblings | self.father.step_siblings
+            queryset = queryset | self.father.kin_siblings | self.father.kin_step_siblings
         if self.mother:
-            queryset = queryset | self.mother.siblings | self.mother.step_siblings
+            queryset = queryset | self.mother.kin_siblings | self.mother.kin_step_siblings
         return queryset
 
     @property
-    def cousins(self):
+    def kin_cousins(self):
         queryset = Person.objects.none()
-        for person in self.uncles_and_aunties:
-            queryset |= person.children
+        for person in self.kin_uncles_and_aunties:
+            queryset |= person.kin_children
         return queryset
 
     @property
-    def second_cousins(self):
+    def kin_second_cousins(self):
         queryset = Person.objects.none()
-        for cousin in self.cousins:
-            queryset |= cousin.children
+        for cousin in self.kin_cousins:
+            queryset |= cousin.kin_children
         return queryset
 
     @property
-    def nephews_and_nieces(self):
+    def kin_nephews_and_nieces(self):
         queryset = Person.objects.none()
-        for person in [*self.siblings, *self.step_siblings]:
-            queryset |= person.children
+        for person in [*self.kin_siblings, *self.kin_step_siblings]:
+            queryset |= person.kin_children
         return queryset
 
     @transaction.atomic
