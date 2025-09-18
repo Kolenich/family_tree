@@ -19,13 +19,11 @@ services:
       - "81:80"
 
   django-server:
+    image: kolenich/family_tree
     volumes:
       - ./volumes/static:/app/static
       - ./volumes/media:/app/media
       - ./volumes/logs:/app/logs
-      - ./volumes/dumps:/app/dumps
-    build:
-      context: .
     restart: always
     depends_on:
       - postgres
