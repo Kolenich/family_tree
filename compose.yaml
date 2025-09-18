@@ -15,7 +15,7 @@ services:
     networks:
       - frontend
     depends_on:
-      - django-server
+      - django
     volumes:
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - ./volumes/static:/usr/share/nginx/html/static
@@ -24,7 +24,7 @@ services:
     ports:
       - "81:80"
 
-  django-server:
+  django:
     image: kolenich/family_tree
     networks:
       - frontend
