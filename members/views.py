@@ -12,9 +12,9 @@ class PersonListView(ListView):
     def get_queryset(self):
         queryset = Person.objects.order_by('date_of_birth')
 
-        if self.request.GET.get('q'):
-            q = self.request.GET.get('q')
-            criteria = Q(last_name__icontains=q) | Q(first_name__icontains=q) | Q(middle_name__icontains=q)
+        if self.request.GET.get('search'):
+            search = self.request.GET.get('search')
+            criteria = Q(last_name__icontains=search) | Q(first_name__icontains=search) | Q(middle_name__icontains=search)
             queryset = queryset.filter(criteria)
 
         if self.request.GET.get('order_by'):

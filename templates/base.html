@@ -27,11 +27,11 @@
     {% if request.path == members_list %}
       <form class='d-flex' action='{{ members_list }}'>
         <input
-            name='q'
-            value='{{ request.GET.q }}'
+            name='search'
+            value='{{ request.GET.search }}'
             class='form-control me-2'
             type='text'
-            placeholder='Поиски по имени...'
+            placeholder='Поиск...'
             aria-label='Поиск'
         >
         <div class='form-floating'>
