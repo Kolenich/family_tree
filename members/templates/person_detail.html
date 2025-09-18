@@ -22,22 +22,22 @@
         <b>Возраст:</b> {{ person.age }}
       </p>
       <p class="card-text">
+        <b>Мать:</b>
         {% if person.mother %}
-          <b>Мать:</b>
           <a class="link-info" href="{% url 'members:detail' person.mother.pk %}">
             {{ person.mother.full_name }}
           </a>
         {% else %}
-          <b>Мать:</b> неизвестна
+          <span>неизвестна</span>
         {% endif %}
         <br />
+        <b>Отец:</b>
         {% if person.father %}
-          <b>Отец:</b>
           <a class="link-info" href="{% url 'members:detail' person.father.pk %}">
             {{ person.father.full_name }}
           </a>
         {% else %}
-          <b>Отец:</b> неизвестен
+          <span>неизвестен</span>
         {% endif %}
       </p>
       {% include 'generic/spouse.html' with spouse=person.spouse %}
