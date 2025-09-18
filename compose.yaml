@@ -1,17 +1,11 @@
 include:
   - compose.infra.yaml
 
-networks:
-  default:
-    name: family-tree
-
 volumes:
   postgres-data:
-    name: postgres-data
 
 services:
   nginx:
-    container_name: nginx
     image: nginx:alpine
     restart: always
     depends_on:
@@ -22,10 +16,9 @@ services:
       - ./volumes/media:/usr/share/nginx/html/media
       - ./volumes/logs:/etc/nginx/logs
     ports:
-      - "80:80"
+      - "81:80"
 
   django-server:
-    container_name: django-server
     volumes:
       - ./volumes/static:/app/static
       - ./volumes/media:/app/media
