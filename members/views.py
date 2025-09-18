@@ -17,6 +17,10 @@ class PersonListView(ListView):
             criteria = Q(last_name__icontains=q) | Q(first_name__icontains=q) | Q(middle_name__icontains=q)
             queryset = queryset.filter(criteria)
 
+        if self.request.GET.get('sort_by'):
+            sort_by = self.request.GET.get('sort_by')
+            queryset = queryset.order_by(sort_by)
+
         return queryset
 
 
