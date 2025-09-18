@@ -3,28 +3,28 @@
 {% load sex_filters %}
 
 {% block css %}
-  <link rel="stylesheet" href="{% static 'css/person_detail.css' %}">
+  <link rel='stylesheet' href='{% static 'css/person_detail.css' %}'>
 {% endblock %}
 
 {% block body %}
   {% static 'img/default-user.png' as default_avatar %}
-  <div class="card mb-3">
-    <div class="card-body">
+  <div class='card mb-3'>
+    <div class='card-body'>
       <img
-          src="{% if person.avatar %}{{ person.avatar.url }}{% else %}{{ default_avatar }}{% endif %}"
-          class="img-fluid img-thumbnail detail-img"
-          alt=""
+          src='{% if person.avatar %}{{ person.avatar.url }}{% else %}{{ default_avatar }}{% endif %}'
+          class='img-fluid img-thumbnail detail-img'
+          alt=''
       >
-      <h5 class="card-title">{{ person.full_name }}</h5>
-      <p class="card-text">
+      <h5 class='card-title'>{{ person.full_name }}</h5>
+      <p class='card-text'>
         <b>Пол:</b> {{ person.get_sex_display|lower }}
         <br />
         <b>Возраст:</b> {{ person.age }}
       </p>
-      <p class="card-text">
+      <p class='card-text'>
         <b>Мать:</b>
         {% if person.mother %}
-          <a class="link-info" href="{% url 'members:detail' person.mother.pk %}">
+          <a class='link-info' href='{% url 'members:detail' person.mother.pk %}'>
             {{ person.mother.full_name }}
           </a>
         {% else %}
@@ -33,7 +33,7 @@
         <br />
         <b>Отец:</b>
         {% if person.father %}
-          <a class="link-info" href="{% url 'members:detail' person.father.pk %}">
+          <a class='link-info' href='{% url 'members:detail' person.father.pk %}'>
             {{ person.father.full_name }}
           </a>
         {% else %}
@@ -60,12 +60,12 @@
       {% include 'generic/related_kin_list.html' with title='Двоюродные сёстры' queryset=person.kin_cousins|is_female %}
       {% include 'generic/related_kin_list.html' with title='Племянники' queryset=person.kin_nephews_and_nieces|is_male %}
       {% include 'generic/related_kin_list.html' with title='Племянницы' queryset=person.kin_nephews_and_nieces|is_female %}
-      <p class="card-text">
-        <small class="text-muted">
+      <p class='card-text'>
+        <small class='text-muted'>
           {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}
         </small>
       </p>
-      <a role="button" class="btn btn-primary m-2 float-end" href="{% url 'members:list' %}">Назад</a>
+      <a role='button' class='btn btn-primary m-2 float-end' href='{% url 'members:list' %}'>Назад</a>
     </div>
   </div>
 {% endblock %}

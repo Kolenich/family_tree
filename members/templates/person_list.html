@@ -2,40 +2,40 @@
 {% load static %}
 
 {% block css %}
-  <link rel="stylesheet" href="{% static 'css/person_list.css' %}">
+  <link rel='stylesheet' href='{% static 'css/person_list.css' %}'>
 {% endblock %}
 
 {% block body %}
-  <div class="row">
+  <div class='row'>
     {% for person in persons %}
-      <div class="col-sm-3 mb-3">
-        <div class="card mb-3">
+      <div class='col-sm-3 mb-3'>
+        <div class='card mb-3'>
           {% if person.avatar %}
             <img
-                src="{{ person.avatar.url }}"
-                class="card-img-top img-fluid scaled-card-image bg-gray"
-                alt=""
+                src='{{ person.avatar.url }}'
+                class='card-img-top img-fluid scaled-card-image bg-gray'
+                alt=''
             >
           {% else %}
             <img
-                src="{% static 'img/default-user.png' %}"
-                class="card-img-top img-fluid scaled-card-image img-thumbnail"
-                alt=""
+                src='{% static 'img/default-user.png' %}'
+                class='card-img-top img-fluid scaled-card-image img-thumbnail'
+                alt=''
             >
           {% endif %}
-          <div class="card-body">
-            <h5 class="card-title">{{ person.short_name }}</h5>
-            <p class="card-text">
+          <div class='card-body'>
+            <h5 class='card-title'>{{ person.short_name }}</h5>
+            <p class='card-text'>
               <b>Пол:</b> {{ person.get_sex_display|lower }}
               <br/>
               <b>Возраст:</b> {{ person.age }}
             </p>
-            <p class="card-text">
-              <small class="text-muted">
+            <p class='card-text'>
+              <small class='text-muted'>
                 {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}
               </small>
             </p>
-            <a href="{% url 'members:detail' person.pk %}" role="button" class="btn btn-primary">Подробнее</a>
+            <a href='{% url 'members:detail' person.pk %}' role='button' class='btn btn-primary'>Подробнее</a>
           </div>
         </div>
       </div>

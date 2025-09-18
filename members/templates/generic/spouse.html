@@ -1,9 +1,9 @@
 {% load sex_filters %}
 
 {% if spouse %}
-  <p class="card-text">
+  <p class='card-text'>
     <b>{% if spouse|is_male %}Супруг{% else %}Супруга{% endif %}:</b>
-    <a class="link-info" href="{% url 'members:detail' spouse.pk %}">
+    <a class='link-info' href='{% url 'members:detail' spouse.pk %}'>
       {{ spouse.full_name }}
     </a>
   </p>
