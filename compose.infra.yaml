@@ -1,6 +1,8 @@
 services:
   postgres:
     image: postgres:alpine
+    networks:
+      - backend
     restart: always
     env_file: ".env"
     volumes:

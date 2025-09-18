@@ -4,10 +4,16 @@ include:
 volumes:
   postgres-data:
 
+networks:
+  frontend:
+  backend:
+
 services:
   nginx:
     image: nginx:alpine
     restart: always
+    networks:
+      - frontend
     depends_on:
       - django-server
     volumes:
@@ -20,6 +26,9 @@ services:
 
   django-server:
     image: kolenich/family_tree
+    networks:
+      - frontend
+      - backend
     volumes:
       - ./volumes/static:/app/static
       - ./volumes/media:/app/media
