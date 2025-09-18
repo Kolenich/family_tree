@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: bump-version-patch
+        name: Bumps version patch section
+        entry: ./bump-version.sh
+        language: system
+        stages: [ pre-commit ]

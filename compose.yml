@@ -1,0 +1,40 @@
+include:
+  - compose.infra.yaml
+
+networks:
+  default:
+    name: family-tree
+
+volumes:
+  postgres-data:
+    name: postgres-data
+
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: always
+    depends_on:
+      - django-server
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./volumes/static:/usr/share/nginx/html/static
+      - ./volumes/media:/usr/share/nginx/html/media
+      - ./volumes/logs:/etc/nginx/logs
+    ports:
+      - "80:80"
+
+  django-server:
+    container_name: django-server
+    volumes:
+      - ./volumes/static:/app/static
+      - ./volumes/media:/app/media
+      - ./volumes/logs:/app/logs
+    build:
+      context: .
+    restart: always
+    depends_on:
+      - postgres
+    env_file: ".env"
+
+
