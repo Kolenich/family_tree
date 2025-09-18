@@ -10,7 +10,7 @@ class PersonListView(ListView):
     template_name = 'person_list.html'
 
     def get_queryset(self):
-        queryset = Person.objects.order_by('date_of_birth')
+        queryset = Person.objects.all()
 
         if self.request.GET.get('q'):
             q = self.request.GET.get('q')
