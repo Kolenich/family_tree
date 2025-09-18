@@ -23,6 +23,7 @@ services:
       - ./volumes/static:/app/static
       - ./volumes/media:/app/media
       - ./volumes/logs:/app/logs
+      - ./volumes/dumps:/app/dumps
     build:
       context: .
     restart: always
