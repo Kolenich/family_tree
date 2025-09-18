@@ -28,10 +28,10 @@
         >
         <div class='form-floating'>
           <select class='form-select form-control me-2 select_order-by' id='order_by' name='order_by'>
-            <option value='age' {% if request.GET.order_by == 'date_of_birth' %}selected{% endif %}>
+            <option value='date_of_birth' {% if request.GET.order_by == 'date_of_birth' %}selected{% endif %}>
               Возраст (по убыванию)
             </option>
-            <option value='-age' {% if request.GET.order_by == '-date_of_birth' %}selected{% endif %}>
+            <option value='-date_of_birth' {% if request.GET.order_by == '-date_of_birth' %}selected{% endif %}>
               Возраст (по возрастанию)
             </option>
             <option
