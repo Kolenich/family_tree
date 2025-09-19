@@ -153,7 +153,7 @@ class Person(models.Model):
         """
         Добавление супруга/супруги.
 
-        :param person: добавляемый человек
+        :param person: Добавляемый человек
         :return:
         """
         assert self.sex != person.sex, 'No single sex marriage allowed'
@@ -167,3 +167,13 @@ class Person(models.Model):
 
         self.save(update_fields=['spouse'])
         person.save(update_fields=['spouse'])
+
+    @transaction.atomic
+    def divorce(self):
+        """Удаление супруга/супруги."""
+        spouse = self.spouse
+        self.spouse = None
+        spouse.spouse = None
+
+        self.save(update_fields=['spouse'])
+        spouse.save(update_fields=['spouse'])
