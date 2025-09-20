@@ -1,11 +1,13 @@
 from django import template
 from django.db.models import QuerySet
 
+from members.models import Person
+
 register = template.Library()
 
 
 @register.filter
-def is_male(obj):
+def is_male(obj: Person | QuerySet[Person]) -> bool | QuerySet[Person]:
     """
     Проверяет, является ли объект мужчиной.
     Работает как с отдельными объектами, так и с QuerySet.
@@ -19,7 +21,7 @@ def is_male(obj):
 
 
 @register.filter
-def is_female(obj):
+def is_female(obj: Person | QuerySet[Person]) -> bool | QuerySet[Person]:
     """
     Проверяет, является ли объект женщиной.
     Работает как с отдельными объектами, так и с QuerySet.

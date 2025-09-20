@@ -49,7 +49,6 @@
             placeholder='Поиск...'
             aria-label='Поиск'
         >
-        <div class='form-floating'>
           <select class='form-select form-select-sm form-control me-2 select_order-by' id='order_by' name='order_by'>
             <option value='date_of_birth' {% if request.GET.order_by == 'date_of_birth' %}selected{% endif %}>
               Возраст (по убыванию)
@@ -77,8 +76,6 @@
               Фамилия (против алфавита)
             </option>
           </select>
-          <label for='order_by'>Сортировать по:</label>
-        </div>
         <button class='form-control ms-2 btn btn-outline-light' type='submit'>Поиск</button>
       </form>
     {% endif %}
