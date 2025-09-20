@@ -27,7 +27,7 @@ class Person(models.Model):
     father = models.ForeignKey('self', verbose_name='Отец', on_delete=models.SET_NULL, blank=True, null=True,
                                related_name='father_of')
     spouse = models.OneToOneField('self', verbose_name='Супруг/супруга', on_delete=models.SET_NULL, null=True,
-                                  blank=True, related_name='spouse_of')
+                                  blank=True)
 
     def __str__(self):
         return self.full_name
@@ -156,6 +156,8 @@ class Person(models.Model):
         :param person: Добавляемый человек
         :return:
         """
+        assert isinstance(person, Person), 'Marriage available only between Persons'
+        assert self != person, 'Can\'t mary yourself'
         assert self.sex != person.sex, 'No single sex marriage allowed'
         assert self.spouse is None, f'You must first divorce with {self.spouse}'
         assert self.spouse != person, f'{self} and {person} already married'
