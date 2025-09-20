@@ -12,7 +12,7 @@
       <img
           src='{% if person.avatar %}{{ person.avatar.url }}{% else %}{{ default_avatar }}{% endif %}'
           class='img-fluid img-thumbnail detail-img'
-          alt=''
+          alt='{{ person.full_name }}'
       >
       <h5 class='card-title'>{{ person.full_name }}</h5>
       <p class='card-text'>

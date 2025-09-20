@@ -14,13 +14,13 @@
             <img
                 src='{{ person.avatar.url }}'
                 class='card-img-top img-fluid scaled-card-image bg-gray'
-                alt=''
+                alt='{{ person.full_name }}'
             >
           {% else %}
             <img
                 src='{% static 'img/default-user.png' %}'
                 class='card-img-top img-fluid scaled-card-image img-thumbnail'
-                alt=''
+                alt='{{ person.full_name }}'
             >
           {% endif %}
           <div class='card-body'>
