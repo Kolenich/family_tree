@@ -23,7 +23,22 @@
 {% url 'members:list' as members_list %}
 <nav class='navbar sticky-top navbar-dark bg-primary'>
   <div class='container-fluid'>
-    <a href='{% url 'home' %}' class='navbar-brand'>Древо</a>
+    {% if request.auth.user.is_superuser %}
+      <a class='btn btn-primary p-0' role='button' title='Добавить члена дерева'>
+        <svg width="24"
+             height="24"
+             viewBox="0 0 24 24"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             stroke-linecap="round"
+             stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </a>
+    {% endif %}
+    <a href='{% url 'home' %}' class='navbar-brand me-auto ms-2'>Древо</a>
     {% if request.path == members_list %}
       <form class='d-flex' action='{{ members_list }}'>
         <input

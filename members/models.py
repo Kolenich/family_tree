@@ -4,8 +4,6 @@ from django.db.models.query import QuerySet
 from django.utils import timezone
 
 
-# Create your models here.
-
 class Person(models.Model):
     """Член дерева."""
 
