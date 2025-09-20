@@ -49,33 +49,34 @@
             placeholder='Поиск...'
             aria-label='Поиск'
         >
-          <select class='form-select form-select-sm form-control me-2 select_order-by' id='order_by' name='order_by'>
-            <option value='date_of_birth' {% if request.GET.order_by == 'date_of_birth' %}selected{% endif %}>
-              Возраст (по убыванию)
-            </option>
-            <option value='-date_of_birth' {% if request.GET.order_by == '-date_of_birth' %}selected{% endif %}>
-              Возраст (по возрастанию)
-            </option>
-            <option
-                value='first_name'
-                {% if request.GET.order_by == 'first_name' %}selected{% endif %}>Имя (по алфавиту)
-            </option>
-            <option
-                value='-first_name'
-                {% if request.GET.order_by == '-first_name' %}selected{% endif %}>Имя (против алфавита)
-            </option>
-            <option
-                value='last_name'
-                {% if request.GET.order_by == 'last_name' %}selected{% endif %}>
-              Фамилия (по алфавиту)
-            </option>
-            <option
-                value='-last_name'
-                {% if request.GET.order_by == '-last_name' %}selected{% endif %}
-            >
-              Фамилия (против алфавита)
-            </option>
-          </select>
+        <select class='form-select form-select-sm form-control me-2 select_order-by' id='order_by' name='order_by'>
+          <option value='date_of_birth' {% if request.GET.order_by == 'date_of_birth' %}selected{% endif %}>
+            Возраст (по убыванию)
+          </option>
+          <option value='-date_of_birth' {% if request.GET.order_by == '-date_of_birth' %}selected{% endif %}>
+            Возраст (по возрастанию)
+          </option>
+          <option
+              value='last_name'
+              {% if request.GET.order_by == 'last_name' %}selected{% endif %}>
+            Фамилия (по алфавиту)
+          </option>
+          <option
+              value='-last_name'
+              {% if request.GET.order_by == '-last_name' %}selected{% endif %}
+          >
+            Фамилия (против алфавита)
+          </option>
+          <option
+              value='first_name'
+              {% if request.GET.order_by == 'first_name' %}selected{% endif %}>Имя (по алфавиту)
+          </option>
+          <option
+              value='-first_name'
+              {% if request.GET.order_by == '-first_name' %}selected{% endif %}>Имя (против алфавита)
+          </option>
+
+        </select>
         <button class='form-control ms-2 btn btn-outline-light' type='submit'>Поиск</button>
       </form>
     {% endif %}
