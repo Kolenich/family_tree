@@ -1,7 +1,9 @@
 """Script for bumping version. Run automatically with patch arg on commit."""
 
 import sys
+import os
 from configparser import ConfigParser
+from git import Repo
 
 
 def bump_version():
@@ -24,6 +26,12 @@ def bump_version():
     version = f'{major}.{minor}.{patch}'
 
     config['SETTINGS']['version'] = version
+
+    if action == 'major' or action == 'minor':
+        git_root = os.getcwd()
+        git_repo = Repo(git_root)
+
+        git_repo.create_tag(version)
 
     with open('settings.ini', 'w') as configfile:
         config.write(configfile)
