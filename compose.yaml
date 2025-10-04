@@ -14,6 +14,7 @@ services:
   nginx:
     image: nginx:alpine
     restart: always
+    env_file: ".env"
     networks:
       - frontend
     depends_on:
