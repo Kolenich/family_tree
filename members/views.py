@@ -34,22 +34,34 @@ class PersonDetailView(DetailView):
             Person.objects
             .select_related(
                 'father',
+                'mother',
                 'father__father',
+                'father__mother',
+                'mother__father',
+                'mother__mother',
                 'father__father__mother',
                 'father__father__father',
-                'father__mother',
                 'father__mother__father',
                 'father__mother__mother',
-                'mother',
-                'mother__mother',
-                'mother__father',
+                'mother__father__father'
+                'mother__father__mother'
+                'mother__mother__father'
+                'mother__mother__mother'
                 'spouse'
             ).prefetch_related(
                 'father_of',
                 'mother_of',
                 'father_of__father_of',
+                'father_of__mother_of',
+                'mother_of__father_of',
                 'mother_of__mother_of',
                 'father_of__father_of__father_of',
-                'mother_of__mother_of__mother_of'
+                'father_of__father_of__mother_of',
+                'father_of__mother_of__father_of',
+                'father_of__mother_of__mother_of',
+                'mother_of__father_of__father_of',
+                'mother_of__father_of__mother_of',
+                'mother_of__mother_of__father_of',
+                'mother_of__mother_of__mother_of',
             )
         )
