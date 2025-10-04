@@ -43,10 +43,10 @@ class PersonDetailView(DetailView):
                 'father__father__father',
                 'father__mother__father',
                 'father__mother__mother',
-                'mother__father__father'
-                'mother__father__mother'
-                'mother__mother__father'
-                'mother__mother__mother'
+                'mother__father__father',
+                'mother__father__mother',
+                'mother__mother__father',
+                'mother__mother__mother',
                 'spouse'
             ).prefetch_related(
                 'father_of',
