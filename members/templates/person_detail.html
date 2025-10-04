@@ -40,20 +40,25 @@
         {% endif %}
       </p>
       {% include 'generic/spouse.html' with spouse=person.spouse %}
-      {% for title, queryset in related_kin_lists.items %}
-        {% if queryset %}
-          <div class='card-text'>
-            <b>{{ title }}:</b>
-            <ul>
-              {% for unit in queryset %}
-                <li>
-                  <a class='link-info' href='{% url 'members:detail' unit.pk %}'>{{ unit.full_name }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-      {% endfor %}
+      {% include 'generic/related_kin_list.html' with title='Дети' queryset=person.kin_children %}
+      {% include 'generic/related_kin_list.html' with title='Внуки' queryset=person.kin_grandchildren|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Внучки' queryset=person.kin_grandchildren|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Правнуки' queryset=person.kin_great_grandchildren|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Правнучки' queryset=person.kin_great_grandchildren|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Дедушки' queryset=person.kin_grandparents|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Бабушки' queryset=person.kin_grandparents|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Прадедушки' queryset=person.kin_great_grandparents|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Прабабушки' queryset=person.kin_great_grandparents|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Родные братья' queryset=person.kin_siblings|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Родные сёстры' queryset=person.kin_siblings|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Сводные братья' queryset=person.kin_step_siblings|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Сводные сёстры' queryset=person.kin_step_siblings|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Дяди' queryset=person.kin_uncles_and_aunties|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Тёти' queryset=person.kin_uncles_and_aunties|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Двоюродные братья' queryset=person.kin_cousins|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Двоюродные сёстры' queryset=person.kin_cousins|is_female %}
+      {% include 'generic/related_kin_list.html' with title='Племянники' queryset=person.kin_nephews_and_nieces|is_male %}
+      {% include 'generic/related_kin_list.html' with title='Племянницы' queryset=person.kin_nephews_and_nieces|is_female %}
       <p class='card-text'>
         <small class='text-muted'>
           {{ person.date_of_birth }} - {% firstof person.date_of_death 'н.в.' %}
