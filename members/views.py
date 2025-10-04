@@ -1,5 +1,7 @@
 from django.db.models import Q
 from django.views.generic import DetailView, ListView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 from .models import Person
 
@@ -29,39 +31,6 @@ class PersonDetailView(DetailView):
     model = Person
     template_name = 'person_detail.html'
 
-    def get_queryset(self):
-        return (
-            Person.objects
-            .select_related(
-                'father',
-                'mother',
-                'father__father',
-                'father__mother',
-                'mother__father',
-                'mother__mother',
-                'father__father__mother',
-                'father__father__father',
-                'father__mother__father',
-                'father__mother__mother',
-                'mother__father__father',
-                'mother__father__mother',
-                'mother__mother__father',
-                'mother__mother__mother',
-                'spouse'
-            ).prefetch_related(
-                'father_of',
-                'mother_of',
-                'father_of__father_of',
-                'father_of__mother_of',
-                'mother_of__father_of',
-                'mother_of__mother_of',
-                'father_of__father_of__father_of',
-                'father_of__father_of__mother_of',
-                'father_of__mother_of__father_of',
-                'father_of__mother_of__mother_of',
-                'mother_of__father_of__father_of',
-                'mother_of__father_of__mother_of',
-                'mother_of__mother_of__father_of',
-                'mother_of__mother_of__mother_of',
-            )
-        )
+    @method_decorator(cache_page(60 * 15))  # Кэшируем на 15 минут
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
