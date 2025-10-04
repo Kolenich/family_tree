@@ -14,7 +14,8 @@ class PersonListView(ListView):
 
         if self.request.GET.get('search'):
             search = self.request.GET.get('search')
-            criteria = Q(last_name__icontains=search) | Q(first_name__icontains=search) | Q(middle_name__icontains=search)
+            criteria = Q(last_name__icontains=search) | Q(first_name__icontains=search) | Q(
+                middle_name__icontains=search)
             queryset = queryset.filter(criteria)
 
         if self.request.GET.get('order_by'):
@@ -27,3 +28,28 @@ class PersonListView(ListView):
 class PersonDetailView(DetailView):
     model = Person
     template_name = 'person_detail.html'
+
+    def get_queryset(self):
+        return (
+            Person.objects
+            .select_related(
+                'father',
+                'father__father',
+                'father__father__mother',
+                'father__father__father',
+                'father__mother',
+                'father__mother__father',
+                'father__mother__mother',
+                'mother',
+                'mother__mother',
+                'mother__father',
+                'spouse'
+            ).prefetch_related(
+                'father_of',
+                'mother_of',
+                'father_of__father_of',
+                'mother_of__mother_of',
+                'father_of__father_of__father_of',
+                'mother_of__mother_of__mother_of'
+            )
+        )
